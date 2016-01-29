@@ -8,7 +8,7 @@ lazy val runScriptedTests = taskKey[Unit]("Run all scripted tests")
 
 runScriptedTests := scripted.toTask("").value
 
-lazy val runScripted: ReleaseStep = releaseStepTaskAggregated(runScriptedTests in ThisProject)
+lazy val runScripted: ReleaseStep = releaseStepTask(runScriptedTests in ThisProject)
 
 def extractGitCmd: (State) => (Git) = { st: State =>
   st.extract.get(releaseVcs).get.asInstanceOf[Git]
