@@ -4,11 +4,11 @@ import ReleaseKeys._
 import sbtrelease.{Git, Utilities, ExtraReleaseCommands}
 import Utilities._
 
-lazy val runScriptedTests = taskKey[Unit]("Run all scripted tests")
+lazy val runScriptedTests = TaskKey[Unit]("Run all scripted tests")
 
 runScriptedTests := scripted.toTask("").value
 
-lazy val runScripted: ReleaseStep = releaseStepTaskAggregated(runScriptedTests in ThisProject)
+lazy val runScripted: ReleaseStep = releaseStepTask(runScriptedTests)
 
 def extractGitCmd: (State) => (Git) = { st: State =>
   st.extract.get(releaseVcs).get.asInstanceOf[Git]
@@ -32,6 +32,7 @@ def checkReleaseBranchExistsAndMatchesVersion: (State) => (State) = { st: State 
 
 def mergeReleaseBranchIntoMasterAndSwitchBack: (State) => (State) = { st =>
   val git = extractGitCmd(st)
+  val version = extractReleaseVersion(st)
   val branch = (git.cmd("rev-parse", "--abbrev-ref", "HEAD") !!).trim
   if (!branch.equals(s"release-$version")) {
     sys.error(s"Branch does not match <release-$version>")
@@ -45,6 +46,7 @@ def mergeReleaseBranchIntoMasterAndSwitchBack: (State) => (State) = { st =>
 
 def mergeReleaseBranchIntoDevelopAndStayThere: (State) => (State) = { st =>
   val git = extractGitCmd(st)
+  val version = extractReleaseVersion(st)
   val branch = (git.cmd("rev-parse", "--abbrev-ref", "HEAD") !!).trim
   if (!branch.equals(s"release-$version")) {
     // just to be on the safe side
