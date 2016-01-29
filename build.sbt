@@ -67,9 +67,11 @@ bintrayOrganization := Some("mediacluster")
 
 bintrayVcsUrl := Some("git@github.com:MediaCluster/sbt-izpack.git")
 
+licenses += ("Apache-2.0", url("http://www.apache.org/licenses/LICENSE-2.0"))
+
 publishMavenStyle := false
 
-pomExtra :=
+pomExtra := (
   <url>https://github.com/MediaCluster/sbt-izpack</url>
     <licenses>
       <license>
@@ -89,8 +91,7 @@ pomExtra :=
         <url>http://www.mediacluster.de</url>
       </developer>
     </developers>
-
-licenses += ("Apache-2.0", url("http://www.apache.org/licenses/LICENSE-2.0"))
+  )
 
 scriptedSettings
 
