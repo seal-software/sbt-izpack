@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<installation version="1.0">
+    <info>
+        <appname>@{appName}</appname>
+        <appversion>@{appVersion}</appversion>
+        <url>http://www.mediacluster.de</url>
+        <authors>
+            <author email="info@mediacluster.de" name="MediaCluster GmbH"/>
+        </authors>
+        <uninstaller/>
+        <javaversion>1.7</javaversion>
+        <requiresjdk>false</requiresjdk>
+        <writeinstallationinformation>yes</writeinstallationinformation>
+        <run-privileged condition="izpack.windowsinstall"/>
+    </info>
+
+    <!--
+      ~ G U I
+      ~ =====
+      -->
+
+    <guiprefs width="500" height="385" resizable="yes">
+        <modifier key="useButtonIcons" value="no"/>
+        <modifier key="useLabelIcons" value="no"/>
+        <modifier key="labelGap" value="2"/>
+        <modifier key="layoutAnchor" value="NORTHWEST"/>
+        <modifier key="useHeadingPanel" value="yes"/>
+        <modifier key="useHeadingForSummary" value="yes"/>
+        <modifier key="headingImageOnLeft" value="no"/>
+        <modifier key="headingLineCount" value="3"/>
+        <modifier key="headingFontSize" value="1.1"/>
+        <modifier key="headingBackgroundColor" value="0xeee7dd"/>
+        <!--<modifier key="headingPanelCounter" value="text"/>-->
+        <!--<modifier key="headingPanelCounterPos" value="inHeading"/>-->
+    </guiprefs>
+
+    <!--
+      ~ L A N G U A G E S
+      ~ ===================
+      -->
+
+    <locale>
+        <langpack iso3="eng"/>
+    </locale>
+
+    <!--
+      ~ V A R I A B L E S
+      ~ =================
+      -->
+
+    <variables>
+        <variable name="InstallerFrame.logfilePath" value="Default"/>
+        <variable name="ShowCreateDirectoryMessage" value="false"/>
+        <variable name="LoadPropertiesPanel.relativePropertiesPath" value="installer.properties"/>
+    </variables>
+
+    <!--
+      ~ R E S O U R C E S
+      ~ =================================
+      -->
+
+    <resources>
+        <!--<res id="TargetPanel.dir.windows" src="resources/targetdir.windows.conf" />-->
+        <!--<res id="TargetPanel.dir.unix" src="resources/targetdir.unix.conf" />-->
+    </resources>
+
+    <!--
+      ~ P A N E L S
+      ~ =================================
+      -->
+
+    <panels>
+        <panel classname="LoadPropertiesPanel"/>
+        <panel classname="DefaultTargetPanel"/>
+        <panel classname="ExtendedInstallPanel"/>
+        <panel classname="SimpleFinishPanel"/>
+    </panels>
+
+    <!--
+      ~ P A C K S
+      ~ =================================
+      -->
+
+    <packs>
+        <pack name="Core" required="yes" preselected="yes">
+            <description>Custom Package</description>
+            <file src="icons/mc.ico" targetdir="$INSTALL_PATH/Uninstaller"/>
+            <fileset targetdir="$INSTALL_PATH" dir="@{stagingDirectory}" defaultexcludes="yes">
+                <include name="**"/>
+                <exclude name="bin/**"/>
+            </fileset>
+            <fileset dir="@{stagingDirectory}/bin" targetdir="$INSTALL_PATH/bin">
+                <os family="unix"/>
+                <include name="simple"/>
+            </fileset>
+            <fileset dir="@{stagingDirectory}/bin" targetdir="$INSTALL_PATH/bin">
+                <os family="windows"/>
+                <include name="simple.bat"/>
+            </fileset>
+            <executable stage="never" targetfile="${INSTALL_PATH}/bin/simple">
+                <os family="unix"/>
+            </executable>
+        </pack>
+        <pack name="Post-install Tasks" required="yes">
+            <description>Configuration required for the installation.</description>
+            <parsable targetfile="$INSTALL_PATH/installer.properties"/>
+            <parsable targetfile="$INSTALL_PATH/SIMPLE_config.txt"/>
+        </pack>
+    </packs>
+</installation>
