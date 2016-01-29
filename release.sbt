@@ -4,11 +4,11 @@ import ReleaseKeys._
 import sbtrelease.{Git, Utilities, ExtraReleaseCommands}
 import Utilities._
 
-lazy val runScriptedTests = taskKey[Unit]("Run all scripted tests")
+lazy val runScriptedTests = TaskKey[Unit]("Run all scripted tests")
 
 runScriptedTests := scripted.toTask("").value
 
-lazy val runScripted: ReleaseStep = releaseStepTask(runScriptedTests in ThisProject)
+lazy val runScripted: ReleaseStep = releaseStepTask(runScriptedTests)
 
 def extractGitCmd: (State) => (Git) = { st: State =>
   st.extract.get(releaseVcs).get.asInstanceOf[Git]
