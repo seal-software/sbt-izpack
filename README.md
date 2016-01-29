@@ -5,7 +5,7 @@ sbt-izpack
   <img src="https://img.shields.io/hexpm/l/plug.svg" alt="License: Apache 2">
 </a>
 
-<a href="https://travis-ci.org/MediaCluster/sbt-typescript/">
+<a href="https://travis-ci.org/MediaCluster/sbt-izpack/">
   <img src="https://travis-ci.org/MediaCluster/sbt-izpack.png" alt="Travis Build">
 </a>
 
