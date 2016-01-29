@@ -32,6 +32,7 @@ def checkReleaseBranchExistsAndMatchesVersion: (State) => (State) = { st: State 
 
 def mergeReleaseBranchIntoMasterAndSwitchBack: (State) => (State) = { st =>
   val git = extractGitCmd(st)
+  val version = extractReleaseVersion(st)
   val branch = (git.cmd("rev-parse", "--abbrev-ref", "HEAD") !!).trim
   if (!branch.equals(s"release-$version")) {
     sys.error(s"Branch does not match <release-$version>")
@@ -45,6 +46,7 @@ def mergeReleaseBranchIntoMasterAndSwitchBack: (State) => (State) = { st =>
 
 def mergeReleaseBranchIntoDevelopAndStayThere: (State) => (State) = { st =>
   val git = extractGitCmd(st)
+  val version = extractReleaseVersion(st)
   val branch = (git.cmd("rev-parse", "--abbrev-ref", "HEAD") !!).trim
   if (!branch.equals(s"release-$version")) {
     // just to be on the safe side
