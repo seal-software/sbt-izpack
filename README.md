@@ -4,7 +4,9 @@ sbt-izpack
 <a href="https://raw.githubusercontent.com/MediaCluster/sbt-izpack/master/LICENSE">
   <img src="https://img.shields.io/hexpm/l/plug.svg" alt="License: Apache 2">
 </a>
-
+<a href='https://bintray.com/mediacluster/sbt-plugins/sbt-izpack/_latestVersion'>
+  <img src='https://api.bintray.com/packages/mediacluster/sbt-plugins/sbt-izpack/images/download.svg'>
+</a>
 <a href="https://travis-ci.org/MediaCluster/sbt-izpack/">
   <img src="https://travis-ci.org/MediaCluster/sbt-izpack.png" alt="Travis Build">
 </a>
