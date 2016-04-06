@@ -57,7 +57,7 @@ TaskKey[Unit]("git-list-tags") := {
   cmd.apply("tag","-l")(cwd, log)
 }
 
-addSbtPlugin("com.typesafe.sbt" %% "sbt-native-packager" % "0.7.4")
+addSbtPlugin("com.typesafe.sbt" %% "sbt-native-packager" % "1.0.1")
 
 enablePlugins(GitBranchPrompt)
 

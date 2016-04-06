@@ -14,9 +14,6 @@
 // limitations under the License.
 //
 
-import com.typesafe.sbt.SbtNativePackager._
-import de.mediacluster.sbt._
-
 name := "simple"
 
 organization := "de.mediacluster"
@@ -26,6 +23,5 @@ version := "1.0-SNAPSHOT"
 scalaVersion := "2.11.1"
 
 lazy val simple = project.in(file("."))
+  .enablePlugins(JavaAppPackaging)
   .enablePlugins(SbtIzPack)
-
-packageArchetype.java_application
