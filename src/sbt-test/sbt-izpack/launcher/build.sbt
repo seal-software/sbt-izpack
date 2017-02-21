@@ -14,7 +14,7 @@
 // limitations under the License.
 //
 
-name := "simple"
+name := "launcher"
 
 organization := "de.mediacluster"
 
@@ -23,5 +23,5 @@ version := "1.0-SNAPSHOT"
 scalaVersion := "2.11.1"
 
 lazy val simple = project.in(file("."))
-  .enablePlugins(JavaAppPackaging)
+  .enablePlugins(LauncherJarPlugin)
   .enablePlugins(SbtIzPack)
