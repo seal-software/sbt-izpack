@@ -14,14 +14,8 @@
 // limitations under the License.
 //
 
-name := "simple"
-
-organization := "de.mediacluster"
-
-version := "1.0-SNAPSHOT"
-
-scalaVersion := "2.11.1"
-
-lazy val simple = project.in(file("."))
-  .enablePlugins(JavaAppPackaging)
-  .enablePlugins(SbtIzPack)
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("Hello sbt-izpack!");
+    }
+}

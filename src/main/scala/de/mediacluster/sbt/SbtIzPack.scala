@@ -20,9 +20,9 @@ package de.mediacluster.sbt
 
 import java.io.{File, FileNotFoundException}
 import java.nio.file.{Files, Path, Paths}
+
 import com.izforge.izpack.compiler._
-import com.typesafe.sbt.SbtNativePackager.NativePackagerKeys._
-import com.typesafe.sbt.SbtNativePackager._
+import com.typesafe.sbt.packager.universal.UniversalPlugin
 import sbt.Keys._
 import sbt._
 
@@ -50,10 +50,13 @@ object Import {
  */
 object SbtIzPack extends AutoPlugin {
 
+  override def requires = UniversalPlugin
+
   val autoImport = Import
 
   import autoImport._
   import autoImport.IzPackKeys._
+  import UniversalPlugin.autoImport._
 
   override def projectSettings = Seq(
 

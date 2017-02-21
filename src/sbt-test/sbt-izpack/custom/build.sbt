@@ -14,9 +14,6 @@
 // limitations under the License.
 //
 
-import com.typesafe.sbt.SbtNativePackager._
-import de.mediacluster.sbt._
-
 name := "custom"
 
 organization := "de.mediacluster"
@@ -26,6 +23,7 @@ version := "1.0-SNAPSHOT"
 scalaVersion := "2.11.1"
 
 lazy val simple = project.in(file("."))
+  .enablePlugins(JavaAppPackaging)
   .enablePlugins(SbtIzPack)
   .settings(
     IzPackKeys.configFile := baseDirectory.value / "install.xml",
@@ -33,5 +31,3 @@ lazy val simple = project.in(file("."))
     sourceDirectory in izpack := baseDirectory.value / "installer",
     target in izpack := baseDirectory.value / "target"
   )
-
-packageArchetype.java_application
