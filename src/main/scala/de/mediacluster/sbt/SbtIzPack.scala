@@ -18,10 +18,11 @@
  */
 package de.mediacluster.sbt
 
-import java.io.{File, FileNotFoundException}
-import java.nio.file.{Files, Path, Paths}
+import java.io.File
+import java.util
+import java.util.logging.LogRecord
 
-import com.izforge.izpack.compiler._
+import com.izforge.izpack.sbt.IzPackSbtMojo
 import com.typesafe.sbt.packager.universal.UniversalPlugin
 import sbt.Keys._
 import sbt._
@@ -54,9 +55,9 @@ object SbtIzPack extends AutoPlugin {
 
   val autoImport = Import
 
-  import autoImport._
-  import autoImport.IzPackKeys._
   import UniversalPlugin.autoImport._
+  import autoImport.IzPackKeys._
+  import autoImport._
 
   override def projectSettings = Seq(
 
@@ -66,7 +67,7 @@ object SbtIzPack extends AutoPlugin {
     configFile := (sourceDirectory in izpack).value / "install.xml",
     outputName := generateArtifactName.value,
     outputFile := (target in izpack).value / outputName.value,
-    kind := CompilerConfig.STANDARD,
+    kind := "standard",
     compressionFormat := "default",
     compressionLevel := -1,
 
@@ -98,17 +99,6 @@ object SbtIzPack extends AutoPlugin {
       compressionLevel, izpackHome, streams) map {
       (configFile, sourceDirectory, targetFile, variables, kind, format, level, home, streams) =>
 
-        val binDir = new File(home, "bin").getAbsolutePath
-
-        createDirectory(binDir, "customActions")
-        createDirectory(binDir, "panels")
-
-        val jarFile = extractIzPackJarLocation
-        streams.log.info("SbtIzPack plugin located at " + jarFile)
-
-        createOrReplaceSymlink(jarFile, Paths.get(binDir, "customActions", "CustomListener.jar"))
-        createOrReplaceSymlink(jarFile, Paths.get(binDir, "panels", "LoadPropertiesPanel.jar"))
-
         executeIzPackTask(configFile, sourceDirectory, targetFile, home, kind, format, level, variables, streams.log)
     }
   }
@@ -123,40 +113,30 @@ object SbtIzPack extends AutoPlugin {
 
     log.info("-> Processing : " + filename)
     log.info("-> Output : " + output)
-    log.info("-> Base path : " + variables.get("stagingDirectory").get)
+    log.info("-> Base path : " + variables("stagingDirectory"))
     log.info("-> Kind : " + kind)
     log.info("-> Compression : " + format)
     log.info("-> Compr. level : " + level)
     log.info("-> IzPack home : " + homeDirectory)
     log.info("Applying predefined variables " + variables)
 
-    CompilerConfig.setIzpackHome(homeDirectory.getAbsolutePath)
-
-    val compiler = new CompilerConfig(filename, basedir, kind, output, format, level, null, null)
-    compiler.getCompiler.setPackagerListener(new SbtPackagerListener(log))
+    val mojo = new IzPackSbtMojo()
+    mojo.baseDir = basedir
+    mojo.comprFormat = format
+    mojo.comprLevel = level
+    mojo.installFile = filename
+    mojo.kind = kind
+    mojo.mkdirs = true
+    mojo.output = output
+    mojo.handler = new CompilerListener(log)
 
     for ((key, value) <- variables) {
-      compiler.addProperty(key, value)
+      mojo.properties.setProperty(key, value)
     }
 
-    try {
+    mojo.execute()
 
-      CompilerOutputWatcher.start()
-      compiler.executeCompiler()
-
-      while (compiler.isAlive) {
-        Thread.sleep(100)
-      }
-
-      if (!compiler.wasSuccessful()) {
-        throw new CompilerException("Packaging installer failed.")
-      }
-
-      log.info("Installer created in " + targetFile.getParent)
-    }
-    finally {
-      CompilerOutputWatcher.stop()
-    }
+    log.info("Installer created in " + targetFile.getParent)
   }
 
   private def generateArtifactName = {
@@ -166,70 +146,29 @@ object SbtIzPack extends AutoPlugin {
     }
   }
 
-  /**
-    * Extracts the path to the JAR archive of this plugin.
-    *
-    * @return The path to the JAR archive of this plugin.
-    */
-  private def extractIzPackJarLocation = {
+  class CompilerListener(log:Logger) extends java.util.logging.Handler {
 
-    val resourceName = String.format("/%s.class", getClass.getName.replace('.', '/'))
-    val resourcePath = getClass.getResource(resourceName).getPath
-    val endPos = resourcePath.lastIndexOf('!')
+    override def flush(): Unit = {
 
-    if (-1 == endPos)
-      throw new IllegalStateException("Extracting IzPack archive location failed")
-
-    val jarFile = new File(uri(url(resourcePath.substring(0, endPos)).toExternalForm))
-    if (!jarFile.exists())
-      throw new FileNotFoundException(jarFile.getPath)
-
-    jarFile.getAbsolutePath
-  }
-
-  /**
-   * Create symlink or replace an existing symlink with the same name.
-   *
-   * @param source the path to where the link should point to
-   * @param link the link path
-   */
-  private def createOrReplaceSymlink(source:String, link:Path) = {
-
-      Files.deleteIfExists(link)
-      Files.createSymbolicLink(link, Paths.get(source))
-  }
-
-  /**
-   * Create directory including its parents, if necessary.
-   *
-   * @param parent the parent directory path
-   * @param child the name of the directory to be created
-   */
-  private def createDirectory(parent:String,child:String) = {
-
-      Files.createDirectories(Paths.get(parent,child))
-  }
-
-  class SbtPackagerListener(log:Logger) extends PackagerListener {
-
-    override def packagerStart() = {
     }
 
-    override def packagerStop() = {
-    }
+    override def publish(record: LogRecord): Unit = {
 
-    override def packagerMsg(s: String) = {
-      packagerMsg(s, PackagerListener.MSG_INFO)
-    }
-
-    override def packagerMsg(s: String, i: Int) = {
-      i match {
-        case PackagerListener.MSG_DEBUG => log.debug(s)
-        case PackagerListener.MSG_ERR => log.error(s)
-        case PackagerListener.MSG_INFO => log.info(s)
-        case PackagerListener.MSG_VERBOSE => log.verbose(s)
-        case PackagerListener.MSG_WARN => log.warn(s)
+      record.getLevel match {
+        case util.logging.Level.ALL => log.verbose(record.getMessage)
+        case util.logging.Level.CONFIG => log.verbose(record.getMessage)
+        case util.logging.Level.FINE => log.verbose(record.getMessage)
+        case util.logging.Level.FINER => log.verbose(record.getMessage)
+        case util.logging.Level.FINEST => log.verbose(record.getMessage)
+        case util.logging.Level.INFO => log.info(record.getMessage)
+        case util.logging.Level.OFF => log.debug(record.getMessage)
+        case util.logging.Level.SEVERE => log.error(record.getMessage)
+        case util.logging.Level.WARNING => log.warn(record.getMessage)
       }
+    }
+
+    override def close(): Unit = {
+
     }
   }
 }

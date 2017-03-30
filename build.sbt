@@ -43,10 +43,26 @@ javacOptions in (Compile, compile) ++= Seq(
   "-Xlint:deprecation"
 )
 
+resolvers ++= Seq(
+  "IceSoft" at "http://anonsvn.icesoft.org/repo/maven2/releases/",
+  "JBoss" at "https://repository.jboss.org/nexus/content/repositories/thirdparty-releases/"
+)
+
 libraryDependencies ++= Seq(
   "com.novocode" % "junit-interface" % "0.11" % "test",
   "junit" % "junit" % "4.12" % "test",
-  "org.codehaus.izpack" % "izpack-standalone-compiler" % "4.3.5"
+  "org.codehaus.izpack" % "izpack-core" % "5.1.0",
+  "org.codehaus.izpack" % "izpack-gui" % "5.1.0",
+  "org.codehaus.izpack" % "izpack-uninstaller" % "5.1.0",
+  "org.codehaus.izpack" % "izpack-panel" % "5.1.0" ,
+  "org.codehaus.izpack" % "izpack-installer" % "5.1.0",
+  "org.codehaus.izpack" % "izpack-event" % "5.1.0",
+  "org.codehaus.izpack" % "izpack-api" % "5.1.0",
+  "org.codehaus.izpack" % "izpack-util" % "5.1.0",
+  "org.codehaus.izpack" % "izpack-wrapper" % "5.1.0",
+  "org.codehaus.izpack" % "izpack-tools" % "5.1.0",
+  "org.codehaus.izpack" % "izpack-ant" % "5.1.0",
+  "org.codehaus.izpack" % "izpack-compiler" % "5.1.0"
 )
 
 TaskKey[Unit]("git-list-tags") := {
@@ -71,27 +87,25 @@ licenses += ("Apache-2.0", url("http://www.apache.org/licenses/LICENSE-2.0"))
 
 publishMavenStyle := false
 
-pomExtra := (
-  <url>https://github.com/MediaCluster/sbt-izpack</url>
-    <licenses>
-      <license>
-        <name>Apache 2</name>
-        <url>http://www.apache.org/licenses/LICENSE-2.0</url>
-        <distribution>repo</distribution>
-      </license>
-    </licenses>
-    <scm>
-      <url>git@github.com:MediaCluster/sbt-izpack.git</url>
-      <connection>scm:git:git@github.com:MediaCluster/sbt-izpack.git</connection>
-    </scm>
-    <developers>
-      <developer>
-        <id>maichler</id>
-        <name>Michael Aichler</name>
-        <url>http://www.mediacluster.de</url>
-      </developer>
-    </developers>
-  )
+pomExtra := <url>https://github.com/MediaCluster/sbt-izpack</url>
+  <licenses>
+    <license>
+      <name>Apache 2</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <scm>
+    <url>git@github.com:MediaCluster/sbt-izpack.git</url>
+    <connection>scm:git:git@github.com:MediaCluster/sbt-izpack.git</connection>
+  </scm>
+  <developers>
+    <developer>
+      <id>maichler</id>
+      <name>Michael Aichler</name>
+      <url>http://www.mediacluster.de</url>
+    </developer>
+  </developers>
 
 scriptedSettings
 
