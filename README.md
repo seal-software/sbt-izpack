@@ -11,13 +11,21 @@ sbt-izpack
   <img src="https://travis-ci.org/MediaCluster/sbt-izpack.png" alt="Travis Build">
 </a>
 
-Allows `IzPack 4` to be used from within SBT. Builds on `sbt-native-packager` in order to produce an installer
+Allows `IzPack 4/5` to be used from within SBT. Builds on `sbt-native-packager` in order to produce an installer
 package from staged distribution files.
 
 To use this plugin use the addSbtPlugin command within your project's plugins.sbt (or as a global setting) i.e.:
 
+IzPack 4:
+
 ```
 addSbtPlugin("de.mediacluster.sbt" % "sbt-izpack" % "1.0.0")
+```
+
+IzPack 5:
+
+```
+addSbtPlugin("de.mediacluster.sbt" % "sbt-izpack" % "2.0.0-RC1")
 ```
 
 Your project's build file also needs to enable this plugin. For example with build.sbt:
@@ -71,4 +79,4 @@ artifactName in izpack := {
 }
 ```
 
-Copyright &copy; 2014-2016, MediaCluster GmbH
+Copyright &copy; 2014-2017, MediaCluster GmbH
