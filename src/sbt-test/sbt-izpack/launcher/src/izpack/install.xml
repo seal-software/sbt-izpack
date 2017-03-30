@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<installation version="1.0">
+<izpack:installation version="5.0"
+         xmlns:izpack="http://izpack.org/schema/installation"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://izpack.org/schema/installation
+         http://izpack.org/schema/5.0/izpack-installation-5.0.xsd">
     <info>
         <appname>@{appName}</appname>
         <appversion>@{appVersion}</appversion>
@@ -70,9 +74,9 @@
       -->
 
     <panels>
-        <panel classname="LoadPropertiesPanel"/>
+        <panel classname="com.izforge.izpack.panels.LoadPropertiesPanel"/>
         <panel classname="DefaultTargetPanel"/>
-        <panel classname="ExtendedInstallPanel"/>
+        <panel classname="InstallPanel"/>
         <panel classname="SimpleFinishPanel"/>
     </panels>
 
@@ -84,7 +88,7 @@
     <packs>
         <pack name="Core" required="yes" preselected="yes">
             <description>Simple Package</description>
-            <fileset targetdir="$INSTALL_PATH" dir="@{stagingDirectory}" defaultexcludes="yes">
+            <fileset targetdir="$INSTALL_PATH" dir="@{stagingDirectory}" defaultexcludes="true">
                 <include name="**"/>
                 <exclude name="bin/**"/>
             </fileset>
@@ -106,4 +110,4 @@
             <parsable targetfile="$INSTALL_PATH/SIMPLE_config.txt"/>
         </pack>
     </packs>
-</installation>
+</izpack:installation>

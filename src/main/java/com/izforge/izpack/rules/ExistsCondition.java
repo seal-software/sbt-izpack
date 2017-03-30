@@ -22,16 +22,20 @@
 
 package com.izforge.izpack.rules;
 
-import com.izforge.izpack.adaptator.IXMLElement;
-import com.izforge.izpack.adaptator.impl.XMLElementImpl;
-import com.izforge.izpack.installer.AutomatedInstallData;
-import com.izforge.izpack.util.VariableSubstitutor;
+import com.izforge.izpack.api.adaptator.IXMLElement;
+import com.izforge.izpack.api.adaptator.impl.XMLElementImpl;
+import com.izforge.izpack.api.data.Variables;
+import com.izforge.izpack.api.exception.CompilerException;
+import com.izforge.izpack.api.rules.Condition;
+import com.izforge.izpack.core.variable.utils.ValueUtils;
+import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.util.EnumSet;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
-import java.util.Properties;
+import java.util.Set;
 import java.util.logging.Logger;
 
 /**
@@ -51,9 +55,10 @@ public class ExistsCondition extends Condition
 
     public ExistsCondition() {}
 
-    public ExistsCondition(ContentType contentType)
+    public ExistsCondition(ContentType contentType, String content)
     {
         this.contentType = contentType;
+        this.content = content;
     }
 
     @Override
@@ -76,8 +81,8 @@ public class ExistsCondition extends Condition
             case FILE:
                 if (this.content != null)
                 {
-                    VariableSubstitutor substitutor = new VariableSubstitutor(getInstallData().getVariables());
-                    File file = new File(substitutor.substitute(this.content, "plain"));
+                    Variables variables = getInstallData().getVariables();
+                    File file = new File(FilenameUtils.normalize(variables.replace(this.content)));
                     if (file.exists())
                     {
                         result = true;
@@ -93,13 +98,13 @@ public class ExistsCondition extends Condition
     }
 
     @Override
-    public void readFromXML(IXMLElement xmlcondition)
+    public void readFromXML(IXMLElement xmlcondition) throws Exception
     {
         if (xmlcondition != null)
         {
             if (xmlcondition.getChildrenCount() != 1)
             {
-                throw new RuntimeException("Condition \"" + getId() + "\" needs exactly one nested element");
+                throw new Exception("Condition \"" + getId() + "\" needs exactly one nested element");
             }
             else
             {
@@ -111,12 +116,12 @@ public class ExistsCondition extends Condition
                 }
                 else
                 {
-                    throw new RuntimeException(
+                    throw new Exception(
                             "Unknown nested element '" + child.getName() + "' to condition \"" + getId() + "\"");
                 }
                 if (this.content == null || this.content.length() == 0)
                 {
-                    throw new RuntimeException("Condition \"" + getId() + "\" has a nested element without valid contents");
+                    throw new Exception("Condition \"" + getId() + "\" has a nested element without valid contents");
                 }
             }
         }
@@ -153,8 +158,28 @@ public class ExistsCondition extends Condition
         conditionRoot.addChild(el);
     }
 
-    public AutomatedInstallData getInstallData() {
-        return installdata;
+    @Override
+    public Set<String> getVarRefs() {
+        HashSet<String> vars = new HashSet<String>(2);
+        switch (contentType)
+        {
+            case VARIABLE:
+                if (this.content != null)
+                {
+                    // variable is used in this case
+                    vars.add(this.content);
+                }
+                break;
+            case FILE:
+                if (this.content != null)
+                {
+                    // variables are resolved here
+                    vars.addAll(ValueUtils.parseUnresolvedVariableNames(this.content));
+                }
+                break;
+            default: throw new CompilerException("Unimplemented contentType");
+        }
+        return vars;
     }
 
     public enum ContentType
@@ -172,7 +197,7 @@ public class ExistsCondition extends Condition
 
         static
         {
-            lookup = new HashMap<>();
+            lookup = new HashMap<String, ContentType>();
             for (ContentType operation : EnumSet.allOf(ContentType.class))
             {
                 lookup.put(operation.getAttribute(), operation);

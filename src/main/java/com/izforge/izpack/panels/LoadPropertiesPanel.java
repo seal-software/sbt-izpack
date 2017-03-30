@@ -18,11 +18,17 @@
  */
 package com.izforge.izpack.panels;
 
-import com.izforge.izpack.installer.InstallData;
-import com.izforge.izpack.installer.InstallerFrame;
-import com.izforge.izpack.installer.IzPanel;
+import com.izforge.izpack.api.data.InstallData;
+import com.izforge.izpack.api.data.Panel;
+import com.izforge.izpack.api.resource.Resources;
+import com.izforge.izpack.gui.IzPanelLayout;
+import com.izforge.izpack.gui.log.Log;
+import com.izforge.izpack.installer.data.GUIInstallData;
+import com.izforge.izpack.installer.gui.InstallerFrame;
+import com.izforge.izpack.installer.gui.IzPanel;
 import com.izforge.izpack.util.Debug;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -39,9 +45,13 @@ public class LoadPropertiesPanel extends IzPanel {
     private static final String PROPERTIES_FILE_VARIABLE = "LoadPropertiesPanel.relativePropertiesPath";
     private static final long serialVersionUID = -1026088572140611703L;
 
+    private final Log log;
+
     @SuppressWarnings("unused")
-    public LoadPropertiesPanel(InstallerFrame installerFrame, InstallData installData) {
-        super(installerFrame, installData);
+    public LoadPropertiesPanel(Panel panel, final InstallerFrame parent, GUIInstallData installData, Resources resources,
+                               Log log) {
+        super(panel, parent, installData, new IzPanelLayout(log), resources);
+        this.log = log;
     }
 
     /**
@@ -54,7 +64,7 @@ public class LoadPropertiesPanel extends IzPanel {
             loadVariables();
         }
         catch (Exception e) {
-            Debug.log(e);
+//            Debug.log(e);
         }
 
         parent.skipPanel();
@@ -67,13 +77,13 @@ public class LoadPropertiesPanel extends IzPanel {
      */
     public void loadVariables() throws Exception {
 
-        String relativePath = idata.getVariable(PROPERTIES_FILE_VARIABLE);
+        String relativePath = installData.getVariable(PROPERTIES_FILE_VARIABLE);
         if (null == relativePath) {
-            Debug.log(PROPERTIES_FILE_VARIABLE + " not set--skipping.");
+//            log.fine(PROPERTIES_FILE_VARIABLE + " not set--skipping.");
             return;
         }
 
-        File propertiesFile = new File(idata.getInstallPath(), relativePath);
+        File propertiesFile = new File(installData.getInstallPath(), relativePath);
 
         System.out.println("Searching for properties in " + propertiesFile);
 
@@ -86,7 +96,7 @@ public class LoadPropertiesPanel extends IzPanel {
 
                 for (Object key : properties.keySet()) {
                     System.out.println("Setting property " + key + "(" + properties.get(key) + ")");
-                    idata.setVariable((String)key, (String)properties.get(key));
+                    installData.setVariable((String)key, (String)properties.get(key));
                 }
 
             }

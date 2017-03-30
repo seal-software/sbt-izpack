@@ -13,7 +13,6 @@
         <uninstaller/>
         <javaversion>1.7</javaversion>
         <requiresjdk>false</requiresjdk>
-        <writeinstallationinformation>yes</writeinstallationinformation>
         <run-privileged condition="izpack.windowsinstall"/>
     </info>
 
@@ -33,8 +32,6 @@
         <modifier key="headingLineCount" value="3"/>
         <modifier key="headingFontSize" value="1.1"/>
         <modifier key="headingBackgroundColor" value="0xeee7dd"/>
-        <!--<modifier key="headingPanelCounter" value="text"/>-->
-        <!--<modifier key="headingPanelCounterPos" value="inHeading"/>-->
     </guiprefs>
 
     <!--
@@ -54,18 +51,7 @@
     <variables>
         <variable name="InstallerFrame.logfilePath" value="Default"/>
         <variable name="ShowCreateDirectoryMessage" value="false"/>
-        <variable name="LoadPropertiesPanel.relativePropertiesPath" value="installer.properties"/>
     </variables>
-
-    <!--
-      ~ R E S O U R C E S
-      ~ =================================
-      -->
-
-    <resources>
-        <!--<res id="TargetPanel.dir.windows" src="resources/targetdir.windows.conf" />-->
-        <!--<res id="TargetPanel.dir.unix" src="resources/targetdir.unix.conf" />-->
-    </resources>
 
     <!--
       ~ P A N E L S
@@ -73,7 +59,7 @@
       -->
 
     <panels>
-        <panel classname="com.izforge.izpack.panels.LoadPropertiesPanel"/>
+        <panel classname="custom.CustomHelloPanel"/>
         <panel classname="DefaultTargetPanel"/>
         <panel classname="InstallPanel"/>
         <panel classname="SimpleFinishPanel"/>
@@ -86,27 +72,19 @@
 
     <packs>
         <pack name="Core" required="yes" preselected="yes">
-            <description>Simple Package</description>
+            <description>Custom Panels Package</description>
             <fileset targetdir="$INSTALL_PATH" dir="@{stagingDirectory}" defaultexcludes="true">
                 <include name="**"/>
-                <exclude name="bin/**"/>
             </fileset>
-            <fileset dir="@{stagingDirectory}/bin" targetdir="$INSTALL_PATH/bin">
-                <os family="unix"/>
-                <include name="simple"/>
-            </fileset>
-            <fileset dir="@{stagingDirectory}/bin" targetdir="$INSTALL_PATH/bin">
-                <os family="windows"/>
-                <include name="simple.bat"/>
-            </fileset>
-            <executable stage="never" targetfile="${INSTALL_PATH}/bin/simple">
-                <os family="unix"/>
-            </executable>
-        </pack>
-        <pack name="Post-install Tasks" required="yes">
-            <description>Configuration required for the installation.</description>
-            <parsable targetfile="$INSTALL_PATH/installer.properties"/>
-            <parsable targetfile="$INSTALL_PATH/SIMPLE_config.txt"/>
         </pack>
     </packs>
+
+    <!--
+      ~ J A R S
+      ~ =====================================
+      ~
+      -->
+
+    <jar src="../../panels/target/scala-2.11/panels_2.11-1.0.jar"/>
+
 </izpack:installation>
