@@ -18,8 +18,7 @@
  */
 package de.mediacluster.sbt
 
-import java.io.{File, FileNotFoundException}
-import java.nio.file.{Files, Path, Paths}
+import java.io.File
 import java.util
 import java.util.logging.LogRecord
 
@@ -56,9 +55,9 @@ object SbtIzPack extends AutoPlugin {
 
   val autoImport = Import
 
-  import autoImport._
-  import autoImport.IzPackKeys._
   import UniversalPlugin.autoImport._
+  import autoImport.IzPackKeys._
+  import autoImport._
 
   override def projectSettings = Seq(
 
@@ -99,17 +98,6 @@ object SbtIzPack extends AutoPlugin {
     (configFile, sourceDirectory in izpack, outputFile, variables, kind, compressionFormat,
       compressionLevel, izpackHome, streams) map {
       (configFile, sourceDirectory, targetFile, variables, kind, format, level, home, streams) =>
-
-        val binDir = new File(home, "bin").getAbsolutePath
-
-        createDirectory(binDir, "customActions")
-        createDirectory(binDir, "panels")
-
-        val jarFile = extractIzPackJarLocation
-        streams.log.info("SbtIzPack plugin located at " + jarFile)
-
-        createOrReplaceSymlink(jarFile, Paths.get(binDir, "customActions", "CustomListener.jar"))
-        createOrReplaceSymlink(jarFile, Paths.get(binDir, "panels", "LoadPropertiesPanel.jar"))
 
         executeIzPackTask(configFile, sourceDirectory, targetFile, home, kind, format, level, variables, streams.log)
     }
@@ -156,50 +144,6 @@ object SbtIzPack extends AutoPlugin {
       (module, a, sv, sbv, toString) =>
         toString(ScalaVersion(sv, sbv), module, a)
     }
-  }
-
-  /**
-    * Extracts the path to the JAR archive of this plugin.
-    *
-    * @return The path to the JAR archive of this plugin.
-    */
-  private def extractIzPackJarLocation = {
-
-    val resourceName = String.format("/%s.class", getClass.getName.replace('.', '/'))
-    val resourcePath = getClass.getResource(resourceName).getPath
-    val endPos = resourcePath.lastIndexOf('!')
-
-    if (-1 == endPos)
-      throw new IllegalStateException("Extracting IzPack archive location failed")
-
-    val jarFile = new File(uri(url(resourcePath.substring(0, endPos)).toExternalForm))
-    if (!jarFile.exists())
-      throw new FileNotFoundException(jarFile.getPath)
-
-    jarFile.getAbsolutePath
-  }
-
-  /**
-   * Create symlink or replace an existing symlink with the same name.
-   *
-   * @param source the path to where the link should point to
-   * @param link the link path
-   */
-  private def createOrReplaceSymlink(source:String, link:Path) = {
-
-      Files.deleteIfExists(link)
-      Files.createSymbolicLink(link, Paths.get(source))
-  }
-
-  /**
-   * Create directory including its parents, if necessary.
-   *
-   * @param parent the parent directory path
-   * @param child the name of the directory to be created
-   */
-  private def createDirectory(parent:String,child:String) = {
-
-      Files.createDirectories(Paths.get(parent,child))
   }
 
   class CompilerListener(log:Logger) extends java.util.logging.Handler {

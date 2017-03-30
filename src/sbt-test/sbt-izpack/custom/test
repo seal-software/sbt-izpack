@@ -14,8 +14,6 @@
 #| limitations under the License.
 #|
 > izpack
-$ exists target/izpack/bin/customActions/CustomListener.jar
-$ exists target/izpack/bin/panels/LoadPropertiesPanel.jar
 $ exists target/universal/stage/bin/custom
 $ exists target/universal/stage/bin/custom.bat
 $ exists target/universal/stage/lib/de.mediacluster.custom-1.0-SNAPSHOT.jar

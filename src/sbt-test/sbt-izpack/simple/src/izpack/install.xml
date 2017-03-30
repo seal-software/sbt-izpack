@@ -33,8 +33,6 @@
         <modifier key="headingLineCount" value="3"/>
         <modifier key="headingFontSize" value="1.1"/>
         <modifier key="headingBackgroundColor" value="0xeee7dd"/>
-        <!--<modifier key="headingPanelCounter" value="text"/>-->
-        <!--<modifier key="headingPanelCounterPos" value="inHeading"/>-->
     </guiprefs>
 
     <!--
@@ -47,33 +45,11 @@
     </locale>
 
     <!--
-      ~ V A R I A B L E S
-      ~ =================
-      -->
-
-    <variables>
-        <variable name="InstallerFrame.logfilePath" value="Default"/>
-        <variable name="ShowCreateDirectoryMessage" value="false"/>
-        <variable name="LoadPropertiesPanel.relativePropertiesPath" value="installer.properties"/>
-    </variables>
-
-    <!--
-      ~ R E S O U R C E S
-      ~ =================================
-      -->
-
-    <resources>
-        <!--<res id="TargetPanel.dir.windows" src="resources/targetdir.windows.conf" />-->
-        <!--<res id="TargetPanel.dir.unix" src="resources/targetdir.unix.conf" />-->
-    </resources>
-
-    <!--
       ~ P A N E L S
       ~ =================================
       -->
 
     <panels>
-        <panel classname="com.izforge.izpack.panels.LoadPropertiesPanel"/>
         <panel classname="DefaultTargetPanel"/>
         <panel classname="InstallPanel"/>
         <panel classname="SimpleFinishPanel"/>

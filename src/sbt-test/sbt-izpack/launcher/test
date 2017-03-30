@@ -14,8 +14,6 @@
 #| limitations under the License.
 #|
 > izpack
-$ exists target/izpack/bin/customActions/CustomListener.jar
-$ exists target/izpack/bin/panels/LoadPropertiesPanel.jar
 $ exists target/izpack/launcher_2.11.1-1.0-SNAPSHOT-installer.jar
 $ exists target/universal/stage/bin/launcher
 $ exists target/universal/stage/bin/launcher.bat
