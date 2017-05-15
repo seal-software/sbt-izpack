@@ -25,7 +25,7 @@ addSbtPlugin("de.mediacluster.sbt" % "sbt-izpack" % "1.0.0")
 IzPack 5:
 
 ```
-addSbtPlugin("de.mediacluster.sbt" % "sbt-izpack" % "2.0.0")
+addSbtPlugin("de.mediacluster.sbt" % "sbt-izpack" % "2.1.0")
 ```
 
 Your project's build file also needs to enable this plugin. For example with build.sbt:

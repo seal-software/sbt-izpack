@@ -51,18 +51,18 @@ resolvers ++= Seq(
 libraryDependencies ++= Seq(
   "com.novocode" % "junit-interface" % "0.11" % "test",
   "junit" % "junit" % "4.12" % "test",
-  "org.codehaus.izpack" % "izpack-core" % "5.1.0",
-  "org.codehaus.izpack" % "izpack-gui" % "5.1.0",
-  "org.codehaus.izpack" % "izpack-uninstaller" % "5.1.0",
-  "org.codehaus.izpack" % "izpack-panel" % "5.1.0" ,
-  "org.codehaus.izpack" % "izpack-installer" % "5.1.0",
-  "org.codehaus.izpack" % "izpack-event" % "5.1.0",
-  "org.codehaus.izpack" % "izpack-api" % "5.1.0",
-  "org.codehaus.izpack" % "izpack-util" % "5.1.0",
-  "org.codehaus.izpack" % "izpack-wrapper" % "5.1.0",
-  "org.codehaus.izpack" % "izpack-tools" % "5.1.0",
-  "org.codehaus.izpack" % "izpack-ant" % "5.1.0",
-  "org.codehaus.izpack" % "izpack-compiler" % "5.1.0"
+  "org.codehaus.izpack" % "izpack-core" % "5.1.1",
+  "org.codehaus.izpack" % "izpack-gui" % "5.1.1",
+  "org.codehaus.izpack" % "izpack-uninstaller" % "5.1.1",
+  "org.codehaus.izpack" % "izpack-panel" % "5.1.1" ,
+  "org.codehaus.izpack" % "izpack-installer" % "5.1.1",
+  "org.codehaus.izpack" % "izpack-event" % "5.1.1",
+  "org.codehaus.izpack" % "izpack-api" % "5.1.1",
+  "org.codehaus.izpack" % "izpack-util" % "5.1.1",
+  "org.codehaus.izpack" % "izpack-wrapper" % "5.1.1",
+  "org.codehaus.izpack" % "izpack-tools" % "5.1.1",
+  "org.codehaus.izpack" % "izpack-ant" % "5.1.1",
+  "org.codehaus.izpack" % "izpack-compiler" % "5.1.1"
 )
 
 TaskKey[Unit]("git-list-tags") := {

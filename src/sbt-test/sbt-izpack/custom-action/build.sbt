@@ -26,8 +26,8 @@ lazy val actions = project.in(file("actions"))
   .enablePlugins(JvmPlugin)
   .settings(
     libraryDependencies ++= Seq(
-      "org.codehaus.izpack" % "izpack-installer" % "5.1.0" % "provided",
-      "org.codehaus.izpack" % "izpack-api" % "5.1.0" % "provided"
+      "org.codehaus.izpack" % "izpack-installer" % "5.1.1" % "provided",
+      "org.codehaus.izpack" % "izpack-api" % "5.1.1" % "provided"
     )
   )
 

@@ -26,11 +26,11 @@ lazy val panels = project.in(file("panels"))
   .enablePlugins(JvmPlugin)
   .settings(
     libraryDependencies ++= Seq(
-      "org.codehaus.izpack" % "izpack-core" % "5.1.0" % "provided",
-      "org.codehaus.izpack" % "izpack-gui" % "5.1.0" % "provided",
-      "org.codehaus.izpack" % "izpack-panel" % "5.1.0" % "provided",
-      "org.codehaus.izpack" % "izpack-installer" % "5.1.0" % "provided",
-      "org.codehaus.izpack" % "izpack-api" % "5.1.0" % "provided"
+      "org.codehaus.izpack" % "izpack-core" % "5.1.1" % "provided",
+      "org.codehaus.izpack" % "izpack-gui" % "5.1.1" % "provided",
+      "org.codehaus.izpack" % "izpack-panel" % "5.1.1" % "provided",
+      "org.codehaus.izpack" % "izpack-installer" % "5.1.1" % "provided",
+      "org.codehaus.izpack" % "izpack-api" % "5.1.1" % "provided"
     )
   )
 
