@@ -44,6 +44,7 @@ javacOptions in (Compile, compile) ++= Seq(
 )
 
 resolvers ++= Seq(
+  "Seal Repo" at "http://nexus.seal-software.net/content/groups/public/",
   "IceSoft" at "http://anonsvn.icesoft.org/repo/maven2/releases/",
   "JBoss" at "https://repository.jboss.org/nexus/content/repositories/thirdparty-releases/"
 )
@@ -51,18 +52,18 @@ resolvers ++= Seq(
 libraryDependencies ++= Seq(
   "com.novocode" % "junit-interface" % "0.11" % "test",
   "junit" % "junit" % "4.12" % "test",
-  "org.codehaus.izpack" % "izpack-core" % "5.1.1",
-  "org.codehaus.izpack" % "izpack-gui" % "5.1.1",
-  "org.codehaus.izpack" % "izpack-uninstaller" % "5.1.1",
-  "org.codehaus.izpack" % "izpack-panel" % "5.1.1" ,
-  "org.codehaus.izpack" % "izpack-installer" % "5.1.1",
-  "org.codehaus.izpack" % "izpack-event" % "5.1.1",
-  "org.codehaus.izpack" % "izpack-api" % "5.1.1",
-  "org.codehaus.izpack" % "izpack-util" % "5.1.1",
-  "org.codehaus.izpack" % "izpack-wrapper" % "5.1.1",
-  "org.codehaus.izpack" % "izpack-tools" % "5.1.1",
-  "org.codehaus.izpack" % "izpack-ant" % "5.1.1",
-  "org.codehaus.izpack" % "izpack-compiler" % "5.1.1"
+  "org.codehaus.izpack" % "izpack-core" % "5.1.2-SEAL.13",
+  "org.codehaus.izpack" % "izpack-gui" % "5.1.2-SEAL.13",
+  "org.codehaus.izpack" % "izpack-uninstaller" % "5.1.2-SEAL.13",
+  "org.codehaus.izpack" % "izpack-panel" % "5.1.2-SEAL.13" ,
+  "org.codehaus.izpack" % "izpack-installer" % "5.1.2-SEAL.13",
+  "org.codehaus.izpack" % "izpack-event" % "5.1.2-SEAL.13",
+  "org.codehaus.izpack" % "izpack-api" % "5.1.2-SEAL.13",
+  "org.codehaus.izpack" % "izpack-util" % "5.1.2-SEAL.13",
+  "org.codehaus.izpack" % "izpack-wrapper" % "5.1.2-SEAL.13",
+  "org.codehaus.izpack" % "izpack-tools" % "5.1.2-SEAL.13",
+  "org.codehaus.izpack" % "izpack-ant" % "5.1.2-SEAL.13",
+  "org.codehaus.izpack" % "izpack-compiler" % "5.1.2-SEAL.13"
 )
 
 TaskKey[Unit]("git-list-tags") := {
