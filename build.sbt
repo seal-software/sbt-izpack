@@ -86,27 +86,7 @@ bintrayVcsUrl := Some("git@github.com:MediaCluster/sbt-izpack.git")
 
 licenses += ("Apache-2.0", url("http://www.apache.org/licenses/LICENSE-2.0"))
 
-publishMavenStyle := false
-
-pomExtra := <url>https://github.com/MediaCluster/sbt-izpack</url>
-  <licenses>
-    <license>
-      <name>Apache 2</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
-  <scm>
-    <url>git@github.com:MediaCluster/sbt-izpack.git</url>
-    <connection>scm:git:git@github.com:MediaCluster/sbt-izpack.git</connection>
-  </scm>
-  <developers>
-    <developer>
-      <id>maichler</id>
-      <name>Michael Aichler</name>
-      <url>http://www.mediacluster.de</url>
-    </developer>
-  </developers>
+publishMavenStyle := true
 
 scriptedSettings
 

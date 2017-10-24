@@ -1,6 +1,24 @@
 sbt-izpack
 ==========
 
+## Seal Publishing
+
+Publish locally to build and create pom
+```
+sbt publishLocal
+```
+
+Publish to nexus
+```
+mvn deploy:deploy-file \
+      -Dfile=target/scala-2.10/sbt-0.13/sbt-izpack-2.1.0-SEAL.1.jar  \
+      -DpomFile=target/scala-2.10/sbt-0.13/sbt-izpack-2.1.0-SEAL.1.pom \
+      -Durl=http://nexus.seal-software.net/content/repositories/releases \
+      -DrepositoryId=nexus
+```
+
+## Original readme
+
 <a href="https://raw.githubusercontent.com/MediaCluster/sbt-izpack/master/LICENSE">
   <img src="https://img.shields.io/hexpm/l/plug.svg" alt="License: Apache 2">
 </a>
