@@ -59,9 +59,12 @@ object SbtIzPack extends AutoPlugin {
   import autoImport.IzPackKeys._
   import autoImport._
 
+
+
   override def projectSettings = Seq(
 
-    izpack := createIzPackTask.dependsOn(stage in Universal).value,
+
+    izpack := (createIzPackTask dependsOn (stage in Universal)).value,
 
     izpackHome := target.value / "izpack",
     configFile := (sourceDirectory in izpack).value / "install.xml",
@@ -90,16 +93,22 @@ object SbtIzPack extends AutoPlugin {
       sourceDirectory := sourceDirectory.value / "izpack",
       stagingDirectory := (stagingDirectory in Universal).value,
       target := target.value / "izpack",
-      logLevel := Level.Info
+      logLevel := Level.Debug
     )
   )
 
   private def createIzPackTask = {
-    (configFile, sourceDirectory in izpack, outputFile, variables, kind, compressionFormat,
-      compressionLevel, izpackHome, streams) map {
-      (configFile, sourceDirectory, targetFile, variables, kind, format, level, home, streams) =>
-
-        executeIzPackTask(configFile, sourceDirectory, targetFile, home, kind, format, level, variables, streams.log)
+    Def.task {
+      executeIzPackTask(
+        configFile.value,
+        (sourceDirectory in izpack).value,
+        outputFile.value,
+        izpackHome.value,
+        kind.value,
+        compressionFormat.value,
+        compressionLevel.value,
+        variables.value,
+        streams.value.log)
     }
   }
 
@@ -140,9 +149,11 @@ object SbtIzPack extends AutoPlugin {
   }
 
   private def generateArtifactName = {
-    (projectID, artifact, scalaVersion in artifactName, scalaBinaryVersion in artifactName, artifactName in izpack) map {
-      (module, a, sv, sbv, toString) =>
-        toString(ScalaVersion(sv, sbv), module, a)
+    Def.task {
+      ((artifactName in izpack).value) (
+        ScalaVersion((scalaVersion in artifactName).value, (scalaBinaryVersion in artifactName).value),
+        projectID.value,
+        artifact.value)
     }
   }
 

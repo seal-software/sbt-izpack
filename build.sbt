@@ -13,6 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
+ val SealIzpackVersion = "5.1.2-SEAL.15"
 
 sbtPlugin := true
 
@@ -20,7 +21,10 @@ name := "sbt-izpack"
 
 organization := "de.mediacluster.sbt"
 
-scalaVersion := "2.10.5"
+scalaVersion := "2.12.8"
+
+publishMavenStyle := true
+publishTo := Some("releases" at "http://nexus.seal-software.net/content/repositories/releases/")
 
 scalacOptions in Compile ++= Seq(
   "-encoding", "UTF-8",
@@ -52,44 +56,40 @@ resolvers ++= Seq(
 libraryDependencies ++= Seq(
   "com.novocode" % "junit-interface" % "0.11" % "test",
   "junit" % "junit" % "4.12" % "test",
-  "org.codehaus.izpack" % "izpack-core" % "5.1.2-SEAL.13",
-  "org.codehaus.izpack" % "izpack-gui" % "5.1.2-SEAL.13",
-  "org.codehaus.izpack" % "izpack-uninstaller" % "5.1.2-SEAL.13",
-  "org.codehaus.izpack" % "izpack-panel" % "5.1.2-SEAL.13" ,
-  "org.codehaus.izpack" % "izpack-installer" % "5.1.2-SEAL.13",
-  "org.codehaus.izpack" % "izpack-event" % "5.1.2-SEAL.13",
-  "org.codehaus.izpack" % "izpack-api" % "5.1.2-SEAL.13",
-  "org.codehaus.izpack" % "izpack-util" % "5.1.2-SEAL.13",
-  "org.codehaus.izpack" % "izpack-wrapper" % "5.1.2-SEAL.13",
-  "org.codehaus.izpack" % "izpack-tools" % "5.1.2-SEAL.13",
-  "org.codehaus.izpack" % "izpack-ant" % "5.1.2-SEAL.13",
-  "org.codehaus.izpack" % "izpack-compiler" % "5.1.2-SEAL.13"
+  "org.codehaus.izpack" % "izpack-core" % SealIzpackVersion,
+  "org.codehaus.izpack" % "izpack-gui" % SealIzpackVersion,
+  "org.codehaus.izpack" % "izpack-uninstaller" % SealIzpackVersion,
+  "org.codehaus.izpack" % "izpack-panel" % SealIzpackVersion ,
+  "org.codehaus.izpack" % "izpack-installer" % SealIzpackVersion,
+  "org.codehaus.izpack" % "izpack-event" % SealIzpackVersion,
+  "org.codehaus.izpack" % "izpack-api" % SealIzpackVersion,
+  "org.codehaus.izpack" % "izpack-util" % SealIzpackVersion,
+  "org.codehaus.izpack" % "izpack-wrapper" % SealIzpackVersion,
+  "org.codehaus.izpack" % "izpack-tools" % SealIzpackVersion,
+  "org.codehaus.izpack" % "izpack-ant" % SealIzpackVersion,
+  "org.codehaus.izpack" % "izpack-compiler" % SealIzpackVersion
 )
 
-TaskKey[Unit]("git-list-tags") := {
-  val cmd = git.runner.value
-  val cwd = baseDirectory.value
-  val log = streams.value.log
-  println("Base directory is " + cwd)
-  cmd.apply("tag","-l")(cwd, log)
-}
-
-addSbtPlugin("com.typesafe.sbt" %% "sbt-native-packager" % "1.1.5")
+addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "1.2.2")
 
 enablePlugins(GitBranchPrompt)
 
-bintrayPackageLabels := Seq("sbt", "izpack")
+//bintrayPackageLabels := Seq("sbt", "izpack")
 
-bintrayOrganization := Some("mediacluster")
+//bintrayOrganization := Some("mediacluster")
 
-bintrayVcsUrl := Some("git@github.com:MediaCluster/sbt-izpack.git")
+//bintrayVcsUrl := Some("git@github.com:MediaCluster/sbt-izpack.git")
 
 licenses += ("Apache-2.0", url("http://www.apache.org/licenses/LICENSE-2.0"))
 
 publishMavenStyle := true
 
-scriptedSettings
+//scriptedSettings
 
-scriptedLaunchOpts <+= version apply { v => s"-Dproject.version=$v" }
+/*scriptedLaunchOpts ++= Seq(
+  s"-Dproject.version=${version.value}"
+)
 
 scriptedBufferLog := false
+*/
+
