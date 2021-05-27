@@ -13,7 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
-val SealIzpackVersion = "5.1.3-SEAL.6"
+val SealIzpackVersion = "5.1.3-SEAL.9"
 
 sbtPlugin := true
 
